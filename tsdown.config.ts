@@ -6,7 +6,7 @@ export default defineConfig({
    * Requires @arethetypeswrong/core to be installed.
    */
   attw: {
-    profile: 'esmOnly',
+    profile: 'esm-only',
   },
   /**
    * Run publint after bundling.
@@ -14,6 +14,14 @@ export default defineConfig({
    */
   publint: true,
   exports: true,
+  /**
+   * The spec package is types-only and a dev dependency, so it has to be inlined
+   * into the declaration output. Listing it fails the build if anything else ever
+   * gets bundled from node_modules.
+   */
+  deps: {
+    onlyBundle: ['@standard-schema/spec'],
+  },
   entry: 'src/**/index.ts',
   format: ['esm'],
 });
