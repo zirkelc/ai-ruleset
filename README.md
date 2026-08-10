@@ -1,10 +1,6 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo-dark.png" />
-  <source media="(prefers-color-scheme: light)" srcset="assets/logo-light.png" />
-  <img src="assets/logo-light.png" alt="ai-ruleset logo" width="400" />
-</picture>
+<h1>ai-ruleset</h1>
 
 <p align="center">Resolve nested rules from runtime context, like a decision tree</p>
 <p align="center">
