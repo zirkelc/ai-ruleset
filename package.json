@@ -1,6 +1,6 @@
 {
   "name": "ai-ruleset",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Resolve nested rules from runtime context, like a decision tree",
   "keywords": [
     "ai",
