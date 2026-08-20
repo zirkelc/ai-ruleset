@@ -1,0 +1,57 @@
+# IMPORTANT: DO NOT RENAME THIS FILE
+# It uses npm Trusted Publishing to deploy without a token.
+# The workflow name and filename must match what is configured on npmjs.com.
+
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  id-token: write # needed for npm publish with provenance
+  contents: write # needed to force-push the floating major version tag
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      # http://github.com/actions/checkout
+      - uses: actions/checkout@v5
+      # https://github.com/pnpm/action-setup
+      - uses: pnpm/action-setup@v4
+      # https://github.com/actions/setup-node
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm build
+      # A prerelease release is flagged `prerelease: true` by release-please, so
+      # publish it under the `next` dist-tag to keep `latest` pointing at the
+      # stable line. A normal release publishes to `latest`. workflow_dispatch
+      # has no release payload, so the prerelease flag is falsy and it publishes
+      # to `latest`.
+      - name: Publish to npm (latest)
+        if: ${{ !github.event.release.prerelease }}
+        run: pnpm publish --provenance --no-git-checks
+      - name: Publish to npm (next)
+        if: ${{ github.event.release.prerelease }}
+        run: pnpm publish --provenance --no-git-checks --tag next
+      # Move the floating major tag (e.g. v2.x) onto this release commit so
+      # version-pinned links like /tree/v2.x always resolve to the newest
+      # release in that major line. Pushed with the default GITHUB_TOKEN, whose
+      # pushes do not re-trigger workflows (no CI loop). Gated to skip prereleases
+      # (so an -rc/-next never yanks the stable vX.x tag) and workflow_dispatch
+      # (no release payload -> empty TAG -> would create a broken ".x" tag).
+      - name: Update major version tag
+        if: ${{ github.event_name == 'release' && !github.event.release.prerelease }}
+        env:
+          TAG: ${{ github.event.release.tag_name }} # e.g. v2.12.0
+        run: |
+          major="${TAG%%.*}"               # v2.12.0 -> v2
+          git tag -f "${major}.x"          # tag the checked-out release commit -> v2.x
+          git push -f origin "${major}.x"

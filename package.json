@@ -1,0 +1,75 @@
+{
+  "name": "ai-ruleset",
+  "version": "0.0.1",
+  "description": "Resolve nested rules from runtime context, like a decision tree",
+  "keywords": [
+    "ai",
+    "cascade",
+    "decision-tree",
+    "llm",
+    "routing",
+    "rule-engine",
+    "rules",
+    "ruleset",
+    "specificity",
+    "standard-schema",
+    "zod"
+  ],
+  "license": "MIT",
+  "author": "Chris Cook",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zirkelc/ai-ruleset.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "types": "dist/index.d.mts",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "prepublishOnly": "pnpm build",
+    "build": "tsdown",
+    "test": "vitest",
+    "lint": "oxlint --fix",
+    "lint:ci": "oxlint",
+    "format": "oxfmt --write",
+    "format:ci": "oxfmt --check",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@standard-schema/spec": "^1.1.0",
+    "@total-typescript/tsconfig": "^1.0.4",
+    "@types/node": "^25.2.3",
+    "arktype": "^2.2.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "oxfmt": "^0.30.0",
+    "oxlint": "^1.45.0",
+    "oxlint-tsgolint": "^0.11.5",
+    "pkg-pr-new": "^0.0.63",
+    "publint": "^0.3.17",
+    "tsdown": "^0.22.14",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18",
+    "zod": "^4.4.3"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,jsx}": [
+      "pnpm lint",
+      "pnpm format"
+    ],
+    "*.{json,jsonc}": [
+      "pnpm format"
+    ]
+  },
+  "packageManager": "pnpm@10.29.2",
+  "inlinedDependencies": {
+    "@standard-schema/spec": "1.1.0"
+  }
+}
