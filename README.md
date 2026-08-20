@@ -244,9 +244,9 @@ Each result key resolves on its own, exactly like CSS resolves each property ind
 rules: {
   plan: {
     pro: {
-      temperature: 0.7, //                          set once, applies to every pro task
+      temperature: 0.7, // set once, applies to every pro task
       task: {
-        code: { model: 'claude-opus-5' }, //        more specific, but only for `model`
+        code: { model: 'claude-opus-5' }, // more specific, but only for `model`
       },
     },
   },
